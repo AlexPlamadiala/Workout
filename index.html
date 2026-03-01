@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Fitness - Plan Personalizat</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <h1>ALEX FITNESS</h1>
+            <p class="header-subtitle">Plan Personalizat de Antrenament & Nutriție</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-section="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Acasă</span>
+        </button>
+        <button class="nav-btn" data-section="workout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M6.5 17.5h11M2 12h2m16 0h2M4 6.5V17.5M20 6.5V17.5"/></svg>
+            <span>Antrenament</span>
+        </button>
+        <button class="nav-btn" data-section="nutrition">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            <span>Nutriție</span>
+        </button>
+        <button class="nav-btn" data-section="shopping">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <span>Cumpărături</span>
+        </button>
+        <button class="nav-btn" data-section="progress">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Progres</span>
+        </button>
+        <button class="nav-btn" data-section="supplements">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>Suplimente</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+
+        <!-- ==================== DASHBOARD ==================== -->
+        <section id="dashboard" class="section active">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">A</div>
+                    <div class="profile-info">
+                        <h2>Alex Plamădiala</h2>
+                        <p>Recompozitie Corporala</p>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">61</span>
+                        <span class="stat-label">kg</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">165</span>
+                        <span class="stat-label">cm</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">36</span>
+                        <span class="stat-label">ani</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">22.4</span>
+                        <span class="stat-label">BMI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Obiective Zilnice</h3>
+                <div class="macro-targets">
+                    <div class="macro-bar">
+                        <div class="macro-header">
+                            <span class="macro-icon calories">🔥</span>
+                            <span>Calorii</span>
+                            <span class="macro-value">2200 kcal</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill calories" style="width:0%" id="cal-bar"></div></div>
+                    </div>
+                    <div class="macro-bar">
+                        <div class="macro-header">
+                            <span class="macro-icon protein">P</span>
+                            <span>Proteine</span>
+                            <span class="macro-value">130g</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill protein" style="width:0%" id="prot-bar"></div></div>
+                    </div>
+                    <div class="macro-bar">
+                        <div class="macro-header">
+                            <span class="macro-icon carbs">C</span>
+                            <span>Carbohidrați</span>
+                            <span class="macro-value">260g</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill carbs" style="width:0%" id="carb-bar"></div></div>
+                    </div>
+                    <div class="macro-bar">
+                        <div class="macro-header">
+                            <span class="macro-icon fats">G</span>
+                            <span>Grăsimi</span>
+                            <span class="macro-value">70g</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill fats" style="width:0%" id="fat-bar"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Programul Tău</h3>
+                <div class="schedule-grid">
+                    <div class="schedule-item" data-day="1">
+                        <span class="day-name">LUN</span>
+                        <span class="day-type upper">Upper A</span>
+                    </div>
+                    <div class="schedule-item" data-day="2">
+                        <span class="day-name">MAR</span>
+                        <span class="day-type lower">Lower A</span>
+                    </div>
+                    <div class="schedule-item" data-day="3">
+                        <span class="day-name">MIE</span>
+                        <span class="day-type rest">Pauza</span>
+                    </div>
+                    <div class="schedule-item" data-day="4">
+                        <span class="day-name">JOI</span>
+                        <span class="day-type upper">Upper B</span>
+                    </div>
+                    <div class="schedule-item" data-day="5">
+                        <span class="day-name">VIN</span>
+                        <span class="day-type lower">Lower B</span>
+                    </div>
+                    <div class="schedule-item" data-day="6">
+                        <span class="day-name">SAM</span>
+                        <span class="day-type rest">Pauza</span>
+                    </div>
+                    <div class="schedule-item" data-day="0">
+                        <span class="day-name">DUM</span>
+                        <span class="day-type rest">Pauza</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Programul Zilnic</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="time">06:20</span>
+                        <span class="event">Trezire</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="time">07:00</span>
+                        <span class="event">Mic dejun (~600 kcal)</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="time">13:00</span>
+                        <span class="event">Pranz (~800 kcal)</span>
+                    </div>
+                    <div class="timeline-item highlight">
+                        <span class="time">18:30</span>
+                        <span class="event">Pre-workout + Shake (~200 kcal)</span>
+                    </div>
+                    <div class="timeline-item highlight">
+                        <span class="time">19:00</span>
+                        <span class="event">ANTRENAMENT (60 min)</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="time">20:15</span>
+                        <span class="event">Cina post-workout (~600 kcal)</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="time">00:00</span>
+                        <span class="event">Somn (6-7 ore)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card tip-card">
+                <h3>Calcule Personalizate</h3>
+                <div class="calc-details">
+                    <p><strong>BMR (Mifflin-St Jeor):</strong> 10×61 + 6.25×165 - 5×36 - 5 = <strong>1456 kcal</strong></p>
+                    <p><strong>TDEE (×1.5 moderat activ):</strong> ~<strong>2184 kcal</strong></p>
+                    <p><strong>Target (menținere/recomp):</strong> ~<strong>2200 kcal</strong></p>
+                    <p><strong>Proteine:</strong> 2.1g/kg = <strong>130g</strong> (24%)</p>
+                    <p><strong>Grăsimi:</strong> 1.1g/kg = <strong>70g</strong> (29%)</p>
+                    <p><strong>Carbohidrați:</strong> restul = <strong>260g</strong> (47%)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== WORKOUT ==================== -->
+        <section id="workout" class="section">
+            <h2 class="section-title">Plan Antrenament</h2>
+            <p class="section-subtitle">Upper/Lower Split — 4 zile/saptamana</p>
+
+            <!-- Rest Timer -->
+            <div class="card timer-card">
+                <h3>Cronometru Pauza</h3>
+                <div class="timer-display">
+                    <span id="timer-value">01:30</span>
+                </div>
+                <div class="timer-presets">
+                    <button class="timer-preset" data-time="60">1:00</button>
+                    <button class="timer-preset active" data-time="90">1:30</button>
+                    <button class="timer-preset" data-time="120">2:00</button>
+                    <button class="timer-preset" data-time="180">3:00</button>
+                </div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="timer-start">START</button>
+                    <button class="btn btn-secondary" id="timer-reset">RESET</button>
+                </div>
+            </div>
+
+            <!-- DAY 1 -->
+            <div class="workout-day">
+                <button class="day-header" data-target="day1">
+                    <div class="day-title">
+                        <span class="day-badge upper">LUNI</span>
+                        <span>Upper Body A — Piept & Spate</span>
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="day-content" id="day1">
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>1. Floor Press cu Bara</h4>
+                            <span class="sets-badge">4 × 8-12</span>
+                        </div>
+                        <p class="exercise-target">Piept, triceps, umeri anteriori</p>
+                        <p class="exercise-desc">Stai pe spate pe saltea, genunchii indoiti. Cobori bara controlat pana atingi coatele pe podea, apoi impinge in sus. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d1e1">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>2. Ramat Aplecat cu Bara</h4>
+                            <span class="sets-badge">4 × 8-12</span>
+                        </div>
+                        <p class="exercise-target">Spate (latissimus, romboid, trapez)</p>
+                        <p class="exercise-desc">Apleaca-te la ~45°, genunchii usor indoiti. Trage bara spre buric, coatele pe langa corp. Cobori controlat. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d1e2">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>3. Presa Overhead cu Gantere</h4>
+                            <span class="sets-badge">3 × 10-12</span>
+                        </div>
+                        <p class="exercise-target">Umeri (deltoid anterior si medial)</p>
+                        <p class="exercise-desc">In picioare, gantere la nivelul umarilor. Impinge in sus pana brațele sunt intinse, cobori controlat. Pauza 60-90s.</p>
+                        <div class="exercise-sets" data-exercise="d1e3">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>4. Fluturari cu Gantere (pe podea)</h4>
+                            <span class="sets-badge">3 × 10-12</span>
+                        </div>
+                        <p class="exercise-target">Piept (pectoral)</p>
+                        <p class="exercise-desc">Pe spate pe saltea, gantere sus. Deschide bratele in lateral cu coatele usor indoite pana coatele ating podeaua, apoi aduna. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d1e4">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>5. Curl Biceps cu Gantere</h4>
+                            <span class="sets-badge">3 × 10-15</span>
+                        </div>
+                        <p class="exercise-target">Biceps</p>
+                        <p class="exercise-desc">In picioare, gantere pe langa corp, palmele in fata. Flexeaza bratele, ridica ganterele spre umeri fara sa miști coatele. Cobori incet. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d1e5">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>6. Extensii Triceps Overhead cu Gantera</h4>
+                            <span class="sets-badge">3 × 10-15</span>
+                        </div>
+                        <p class="exercise-target">Triceps</p>
+                        <p class="exercise-desc">In picioare, tine o gantera cu ambele maini deasupra capului. Cobori in spatele capului indoind coatele, apoi impinge in sus. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d1e6">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>7. Ridicari Laterale cu Gantere</h4>
+                            <span class="sets-badge">3 × 12-15</span>
+                        </div>
+                        <p class="exercise-target">Umeri (deltoid lateral)</p>
+                        <p class="exercise-desc">In picioare, gantere pe langa corp. Ridica bratele lateral pana la nivelul umerilor (forma de T). Cobori incet. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d1e7">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 2 -->
+            <div class="workout-day">
+                <button class="day-header" data-target="day2">
+                    <div class="day-title">
+                        <span class="day-badge lower">MARTI</span>
+                        <span>Lower Body A — Quads & Fesieri</span>
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="day-content" id="day2">
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>1. Genuflexiuni (Squat) cu Bara</h4>
+                            <span class="sets-badge">4 × 8-12</span>
+                        </div>
+                        <p class="exercise-target">Cvadriceps, fesieri, core</p>
+                        <p class="exercise-desc">Bara pe trapez, picioare la latimea umerilor. Cobori controlat pana coapsa e paralela cu podeaua, apoi ridica-te. Spate drept! Pauza 120s.</p>
+                        <div class="exercise-sets" data-exercise="d2e1">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>2. Fandari cu Gantere</h4>
+                            <span class="sets-badge">3 × 10-12/picior</span>
+                        </div>
+                        <p class="exercise-target">Cvadriceps, fesieri, echilibru</p>
+                        <p class="exercise-desc">Gantere in maini, fa un pas mare inainte. Cobori pana genunchiul din spate aproape atinge podeaua. Impinge inapoi. Alterna picioarele. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d2e2">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>3. Hip Thrust cu Bara</h4>
+                            <span class="sets-badge">3 × 12-15</span>
+                        </div>
+                        <p class="exercise-target">Fesieri, ischiogambieri</p>
+                        <p class="exercise-desc">Spate pe saltea/canapea, bara pe solduri. Impinge soldurile in sus pana corpul formeaza o linie dreapta. Strange fesierii sus. Cobori controlat. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d2e3">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>4. Ridicari pe Varfuri cu Gantere</h4>
+                            <span class="sets-badge">4 × 15-20</span>
+                        </div>
+                        <p class="exercise-target">Gambe (gastrocnemian, solear)</p>
+                        <p class="exercise-desc">In picioare cu gantere in maini. Ridica-te pe varfuri cat poti, tine 1-2 secunde sus, cobori incet. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d2e4">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>5. Plank (Plansa)</h4>
+                            <span class="sets-badge">3 × 30-60s</span>
+                        </div>
+                        <p class="exercise-target">Core (abdomen, spate inferior)</p>
+                        <p class="exercise-desc">Pe antebrațe si varfuri, corpul drept ca o scandura. Nu lasa soldurile sa cada sau sa se ridice. Respira normal. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d2e5">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>6. Bicycle Crunches</h4>
+                            <span class="sets-badge">3 × 15-20</span>
+                        </div>
+                        <p class="exercise-target">Abdomen (drept abdominal, oblici)</p>
+                        <p class="exercise-desc">Pe spate, maini la ceafa. Adu genunchiul drept spre cotul stang rotind trunchiul, apoi inverseaza. Miscare controlata! Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d2e6">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 3 - REST -->
+            <div class="workout-day rest-day">
+                <button class="day-header" data-target="day3">
+                    <div class="day-title">
+                        <span class="day-badge rest">MIERCURI</span>
+                        <span>Zi de Pauza</span>
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="day-content" id="day3">
+                    <div class="rest-info">
+                        <h4>Recuperare Activa (Optional)</h4>
+                        <ul>
+                            <li>Plimbare 20-30 minute</li>
+                            <li>Stretching 15 minute</li>
+                            <li>Foam rolling daca ai</li>
+                            <li>Hidrateaza-te bine (2-3L apa)</li>
+                        </ul>
+                        <p class="rest-tip">Muschii cresc in zilele de pauza, nu in timpul antrenamentului. Odihna e la fel de importanta!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 4 -->
+            <div class="workout-day">
+                <button class="day-header" data-target="day4">
+                    <div class="day-title">
+                        <span class="day-badge upper">JOI</span>
+                        <span>Upper Body B — Umeri & Brate</span>
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="day-content" id="day4">
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>1. Presa Overhead cu Bara</h4>
+                            <span class="sets-badge">4 × 8-12</span>
+                        </div>
+                        <p class="exercise-target">Umeri (deltoid), triceps</p>
+                        <p class="exercise-desc">In picioare, bara la nivelul claviculelor. Impinge bara deasupra capului pana bratele sunt intinse. Cobori controlat. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d4e1">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>2. Floor Press cu Gantere</h4>
+                            <span class="sets-badge">4 × 8-12</span>
+                        </div>
+                        <p class="exercise-target">Piept, triceps</p>
+                        <p class="exercise-desc">Pe spate pe saltea, gantere la piept. Impinge in sus, cobori pana coatele ating podeaua. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d4e2">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>3. Ramat cu Gantera (un brat)</h4>
+                            <span class="sets-badge">4 × 8-12/mana</span>
+                        </div>
+                        <p class="exercise-target">Spate (latissimus, romboid)</p>
+                        <p class="exercise-desc">Aplecat cu o mana pe scaun/genunchi. Trage gantera spre sold strangand omoplatul. Cobori controlat. Fa ambele parti. Pauza 60s/mana.</p>
+                        <div class="exercise-sets" data-exercise="d4e3">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>4. Curl cu Bara</h4>
+                            <span class="sets-badge">3 × 10-12</span>
+                        </div>
+                        <p class="exercise-target">Biceps</p>
+                        <p class="exercise-desc">In picioare, bara cu priza supina (palme in sus). Flexeaza bratele, ridica bara spre umeri. Nu balansa corpul. Cobori incet. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d4e4">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>5. Close-Grip Floor Press cu Bara</h4>
+                            <span class="sets-badge">3 × 10-12</span>
+                        </div>
+                        <p class="exercise-target">Triceps, piept interior</p>
+                        <p class="exercise-desc">Ca floor press-ul normal dar cu priza ingusta (mainile la ~20cm distanta). Concentreaza-te pe triceps. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d4e5">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>6. Shrugs cu Gantere</h4>
+                            <span class="sets-badge">3 × 12-15</span>
+                        </div>
+                        <p class="exercise-target">Trapez superior</p>
+                        <p class="exercise-desc">In picioare, gantere pe langa corp. Ridica umerii spre urechi, tine 1-2 sec sus, cobori incet. Nu roti umerii. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d4e6">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>7. Flotari (Push-ups)</h4>
+                            <span class="sets-badge">3 × MAX</span>
+                        </div>
+                        <p class="exercise-target">Piept, triceps, umeri (finisher)</p>
+                        <p class="exercise-desc">Mainile la latimea umerilor, corp drept. Cobori pana pieptul aproape atinge podeaua, impinge in sus. Fa cate poti cu forma buna. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d4e7">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 5 -->
+            <div class="workout-day">
+                <button class="day-header" data-target="day5">
+                    <div class="day-title">
+                        <span class="day-badge lower">VINERI</span>
+                        <span>Lower Body B — Posterior & Core</span>
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="day-content" id="day5">
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>1. Indreptari (Deadlift) cu Bara</h4>
+                            <span class="sets-badge">4 × 6-10</span>
+                        </div>
+                        <p class="exercise-target">Spate inferior, ischiogambieri, fesieri, trapez</p>
+                        <p class="exercise-desc">Bara pe podea, picioare la latimea soldurilor. Prinde bara, piept in fata, spate DREPT. Ridica-te impingand podeaua cu picioarele. NU rotunji spatele! Pauza 120-180s.</p>
+                        <div class="exercise-sets" data-exercise="d5e1">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 4</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>2. Bulgarian Split Squat cu Gantere</h4>
+                            <span class="sets-badge">3 × 10-12/picior</span>
+                        </div>
+                        <p class="exercise-target">Cvadriceps, fesieri, echilibru</p>
+                        <p class="exercise-desc">Un picior pe scaun in spate, gantera in fiecare mana. Cobori pana genunchiul din fata e la 90°. Impinge in sus. Fa ambele picioare. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d5e2">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>3. Romanian Deadlift cu Bara</h4>
+                            <span class="sets-badge">3 × 10-12</span>
+                        </div>
+                        <p class="exercise-target">Ischiogambieri, fesieri, spate inferior</p>
+                        <p class="exercise-desc">In picioare cu bara. Impinge soldurile inapoi, cobori bara pe langa picioare cu spatele DREPT. Simte intinderea in ischiogambieri. Ridica-te prin contractia fesierilor. Pauza 90s.</p>
+                        <div class="exercise-sets" data-exercise="d5e3">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>4. Goblet Squat cu Gantera</h4>
+                            <span class="sets-badge">3 × 12-15</span>
+                        </div>
+                        <p class="exercise-target">Cvadriceps, fesieri, core</p>
+                        <p class="exercise-desc">Tine gantera la piept cu ambele maini. Genuflexiune adanca, coatele intre genunchi. Excelent pentru forma si mobilitate. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d5e4">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>5. Russian Twists cu Gantera</h4>
+                            <span class="sets-badge">3 × 15-20/parte</span>
+                        </div>
+                        <p class="exercise-target">Oblici, core</p>
+                        <p class="exercise-desc">Stai pe fesieri, picioare ridicate usor. Tine gantera la piept si roteste trunchiul stanga-dreapta. Controlat, fara graba. Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d5e5">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <h4>6. Ridicari de Picioare (Leg Raises)</h4>
+                            <span class="sets-badge">3 × 12-15</span>
+                        </div>
+                        <p class="exercise-target">Abdomen inferior</p>
+                        <p class="exercise-desc">Pe spate pe saltea, maini pe langa corp. Ridica picioarele intinse pana la 90°, cobori incet fara sa atingi podeaua. Spate lipit de saltea! Pauza 60s.</p>
+                        <div class="exercise-sets" data-exercise="d5e6">
+                            <label class="set-check"><input type="checkbox"><span>Set 1</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 2</span></label>
+                            <label class="set-check"><input type="checkbox"><span>Set 3</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 6-7 REST -->
+            <div class="workout-day rest-day">
+                <button class="day-header" data-target="day67">
+                    <div class="day-title">
+                        <span class="day-badge rest">SAM-DUM</span>
+                        <span>Weekend — Pauza & Recuperare</span>
+                    </div>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="day-content" id="day67">
+                    <div class="rest-info">
+                        <h4>Weekend de Recuperare</h4>
+                        <ul>
+                            <li>Plimbare 30-45 minute (optional)</li>
+                            <li>Stretching sau yoga 20 min</li>
+                            <li>Pregateste mancarea pentru saptamana viitoare (meal prep)</li>
+                            <li>Dormi bine — minim 7 ore</li>
+                            <li>Hidrateaza-te (2.5-3L apa/zi)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card tip-card">
+                <h3>Sfaturi Importante</h3>
+                <ul>
+                    <li><strong>Progresia:</strong> Adauga greutate cand poti face usor maximul de repetari pe toate seturile</li>
+                    <li><strong>Forma:</strong> Mai bine greutate mica cu forma perfecta decat greutate mare cu forma proasta</li>
+                    <li><strong>Incalzire:</strong> 5 min cardio usor + 1-2 seturi usoare la primul exercitiu</li>
+                    <li><strong>Pauze:</strong> 60-90s exercitii izolare, 90-180s exercitii compuse</li>
+                    <li><strong>Respiratie:</strong> Inspira la coborare, expira la ridicare</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== NUTRITION ==================== -->
+        <section id="nutrition" class="section">
+            <h2 class="section-title">Plan Nutritional</h2>
+            <p class="section-subtitle">~2200 kcal/zi — Recompozitie Corporala</p>
+
+            <div class="card">
+                <h3>Obiective Macro Zilnice</h3>
+                <div class="macro-summary">
+                    <div class="macro-circle">
+                        <div class="circle-value">2200</div>
+                        <div class="circle-label">kcal</div>
+                    </div>
+                    <div class="macro-breakdown">
+                        <div class="macro-item protein">
+                            <span class="macro-dot"></span>
+                            <span>Proteine: <strong>130g</strong> (24%)</span>
+                        </div>
+                        <div class="macro-item carbs">
+                            <span class="macro-dot"></span>
+                            <span>Carbohidrati: <strong>260g</strong> (47%)</span>
+                        </div>
+                        <div class="macro-item fats">
+                            <span class="macro-dot"></span>
+                            <span>Grasimi: <strong>70g</strong> (29%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEAL 1 -->
+            <div class="meal-card">
+                <div class="meal-header">
+                    <div class="meal-time">07:00</div>
+                    <div class="meal-title">
+                        <h3>Mic Dejun</h3>
+                        <span class="meal-cals">~600 kcal</span>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea A: Ovaz cu Unt de Arahide</h4>
+                    <table class="food-table">
+                        <tr><td>Fulgi de ovaz</td><td>80g</td><td>296 kcal</td><td>10g P</td></tr>
+                        <tr><td>Lapte 1.5%</td><td>250ml</td><td>112 kcal</td><td>8g P</td></tr>
+                        <tr><td>Banana</td><td>1 buc</td><td>105 kcal</td><td>1g P</td></tr>
+                        <tr><td>Unt de arahide</td><td>20g</td><td>120 kcal</td><td>5g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>633 kcal</strong></td><td><strong>24g P</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea B: Omleta cu Paine</h4>
+                    <table class="food-table">
+                        <tr><td>Oua intregi</td><td>3 buc</td><td>210 kcal</td><td>18g P</td></tr>
+                        <tr><td>Paine integrala</td><td>2 felii (80g)</td><td>190 kcal</td><td>7g P</td></tr>
+                        <tr><td>Branza de vaci</td><td>50g</td><td>45 kcal</td><td>6g P</td></tr>
+                        <tr><td>Rosie</td><td>1 buc</td><td>20 kcal</td><td>1g P</td></tr>
+                        <tr><td>Ulei de masline</td><td>5ml</td><td>45 kcal</td><td>0g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>510 kcal</strong></td><td><strong>32g P</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea C: Sandwich Rapid</h4>
+                    <table class="food-table">
+                        <tr><td>Paine integrala</td><td>2 felii (80g)</td><td>190 kcal</td><td>7g P</td></tr>
+                        <tr><td>Ton conserva (in suc propriu)</td><td>1 conserva (80g)</td><td>90 kcal</td><td>20g P</td></tr>
+                        <tr><td>Ou fiert</td><td>2 buc</td><td>140 kcal</td><td>12g P</td></tr>
+                        <tr><td>Castravete</td><td>1 buc</td><td>15 kcal</td><td>1g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>435 kcal</strong></td><td><strong>40g P</strong></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MEAL 2 -->
+            <div class="meal-card">
+                <div class="meal-header">
+                    <div class="meal-time">13:00</div>
+                    <div class="meal-title">
+                        <h3>Pranz</h3>
+                        <span class="meal-cals">~800 kcal</span>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea A: Pui cu Orez</h4>
+                    <table class="food-table">
+                        <tr><td>Piept de pui</td><td>180g</td><td>297 kcal</td><td>56g P</td></tr>
+                        <tr><td>Orez (cantitate uscata)</td><td>100g</td><td>360 kcal</td><td>7g P</td></tr>
+                        <tr><td>Legume (broccoli/fasole verde)</td><td>150g</td><td>50 kcal</td><td>3g P</td></tr>
+                        <tr><td>Ulei de masline</td><td>10ml</td><td>90 kcal</td><td>0g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>797 kcal</strong></td><td><strong>66g P</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea B: Paste cu Carne Tocata</h4>
+                    <table class="food-table">
+                        <tr><td>Carne tocata mixta (10% grasime)</td><td>150g</td><td>225 kcal</td><td>30g P</td></tr>
+                        <tr><td>Paste (cantitate uscata)</td><td>100g</td><td>350 kcal</td><td>12g P</td></tr>
+                        <tr><td>Sos de rosii (passata)</td><td>100ml</td><td>30 kcal</td><td>1g P</td></tr>
+                        <tr><td>Ceapa + usturoi</td><td>50g</td><td>25 kcal</td><td>1g P</td></tr>
+                        <tr><td>Ulei de masline</td><td>10ml</td><td>90 kcal</td><td>0g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>720 kcal</strong></td><td><strong>44g P</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea C: Pui cu Cartofi</h4>
+                    <table class="food-table">
+                        <tr><td>Piept de pui</td><td>180g</td><td>297 kcal</td><td>56g P</td></tr>
+                        <tr><td>Cartofi (fierti/copti)</td><td>300g</td><td>255 kcal</td><td>6g P</td></tr>
+                        <tr><td>Salata verde + rosii</td><td>150g</td><td>30 kcal</td><td>2g P</td></tr>
+                        <tr><td>Ulei + otet</td><td>10ml</td><td>90 kcal</td><td>0g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>672 kcal</strong></td><td><strong>64g P</strong></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PRE-WORKOUT -->
+            <div class="meal-card highlight-meal">
+                <div class="meal-header">
+                    <div class="meal-time">18:30</div>
+                    <div class="meal-title">
+                        <h3>Pre-Workout Shake</h3>
+                        <span class="meal-cals">~200 kcal</span>
+                    </div>
+                </div>
+                <div class="meal-option">
+                    <table class="food-table">
+                        <tr><td>ON Gold Standard Whey</td><td>1 scoop (30g)</td><td>120 kcal</td><td>24g P</td></tr>
+                        <tr><td>Banana</td><td>1 buc</td><td>105 kcal</td><td>1g P</td></tr>
+                        <tr><td>ON Pre-Workout</td><td>1 doza</td><td>5 kcal</td><td>-</td></tr>
+                        <tr><td>ON Creatina</td><td>5g</td><td>0 kcal</td><td>-</td></tr>
+                        <tr><td>Apa</td><td>400ml</td><td>0 kcal</td><td>-</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>230 kcal</strong></td><td><strong>25g P</strong></td></tr>
+                    </table>
+                    <p class="meal-note">Ia shake-ul cu 30 min inainte de antrenament. Creatina poate fi luata oricand in timpul zilei — important e sa o iei zilnic (inclusiv zilele fara antrenament).</p>
+                </div>
+            </div>
+
+            <!-- MEAL 3 -->
+            <div class="meal-card">
+                <div class="meal-header">
+                    <div class="meal-time">20:15</div>
+                    <div class="meal-title">
+                        <h3>Cina Post-Workout</h3>
+                        <span class="meal-cals">~600 kcal</span>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea A: Omleta Mare cu Paste</h4>
+                    <table class="food-table">
+                        <tr><td>Oua intregi</td><td>3 buc</td><td>210 kcal</td><td>18g P</td></tr>
+                        <tr><td>Paste (cantitate uscata)</td><td>80g</td><td>280 kcal</td><td>10g P</td></tr>
+                        <tr><td>Branza rasa</td><td>30g</td><td>110 kcal</td><td>8g P</td></tr>
+                        <tr><td>Legume (ardei, rosii, ceapa)</td><td>100g</td><td>25 kcal</td><td>1g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>625 kcal</strong></td><td><strong>37g P</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea B: Pui cu Cartofi Piure</h4>
+                    <table class="food-table">
+                        <tr><td>Piept de pui</td><td>150g</td><td>247 kcal</td><td>47g P</td></tr>
+                        <tr><td>Cartofi piure</td><td>200g</td><td>170 kcal</td><td>4g P</td></tr>
+                        <tr><td>Unt (in piure)</td><td>10g</td><td>74 kcal</td><td>0g P</td></tr>
+                        <tr><td>Legume la tigaie</td><td>100g</td><td>40 kcal</td><td>2g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>531 kcal</strong></td><td><strong>53g P</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="meal-option">
+                    <h4>Optiunea C: Branza de Vaci cu Ovaz (rapid)</h4>
+                    <table class="food-table">
+                        <tr><td>Branza de vaci</td><td>200g</td><td>180 kcal</td><td>24g P</td></tr>
+                        <tr><td>Fulgi de ovaz</td><td>60g</td><td>222 kcal</td><td>8g P</td></tr>
+                        <tr><td>Miere</td><td>15g</td><td>45 kcal</td><td>0g P</td></tr>
+                        <tr><td>Nuci/migdale</td><td>20g</td><td>130 kcal</td><td>4g P</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>577 kcal</strong></td><td><strong>36g P</strong></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card tip-card">
+                <h3>Sfaturi Nutritionale</h3>
+                <ul>
+                    <li><strong>Apa:</strong> Bea minim 2-2.5 litri de apa pe zi</li>
+                    <li><strong>Proteine:</strong> Distribuie proteinele cat mai uniform pe mese</li>
+                    <li><strong>Flexibilitate:</strong> Combina optiunile cum vrei, atata timp cat totalul zilnic e aproape de target</li>
+                    <li><strong>Cantarire:</strong> Cantareste alimentele (cantitate uscata pt orez/paste) — investitie mica, diferenta mare</li>
+                    <li><strong>Zilele fara antrenament:</strong> Mananca la fel! Muschii cresc in zilele de pauza</li>
+                    <li><strong>Daca ai doar 2 mese:</strong> Combina mic dejun cu pranz intr-o masa mai mare la 12:00-13:00</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== SHOPPING ==================== -->
+        <section id="shopping" class="section">
+            <h2 class="section-title">Lista de Cumparaturi</h2>
+            <p class="section-subtitle">Saptamanala — Buget estimat: ~400 lei/luna</p>
+
+            <div class="card">
+                <h3>Proteine</h3>
+                <div class="shopping-list">
+                    <label class="shop-item"><input type="checkbox"><span>Piept de pui — 1.5 kg</span><span class="price">~45 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Oua — 30 buc</span><span class="price">~18 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Carne tocata mixta — 500g</span><span class="price">~18 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Ton conserva (in suc propriu) — 3 buc</span><span class="price">~27 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Branza de vaci — 500g</span><span class="price">~12 lei</span></label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Carbohidrati</h3>
+                <div class="shopping-list">
+                    <label class="shop-item"><input type="checkbox"><span>Fulgi de ovaz — 1 kg</span><span class="price">~8 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Orez — 1 kg</span><span class="price">~8 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Paste — 1 kg</span><span class="price">~6 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Paine integrala — 2 buc</span><span class="price">~10 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Cartofi — 2 kg</span><span class="price">~8 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Banane — 1 kg</span><span class="price">~7 lei</span></label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Grasimi Sanatoase</h3>
+                <div class="shopping-list">
+                    <label class="shop-item"><input type="checkbox"><span>Ulei de masline — 500ml (la 2 sapt)</span><span class="price">~18 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Unt de arahide — 400g (lunar)</span><span class="price">~18 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Unt — 200g</span><span class="price">~8 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Branza rasa — 200g</span><span class="price">~10 lei</span></label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Legume & Diverse</h3>
+                <div class="shopping-list">
+                    <label class="shop-item"><input type="checkbox"><span>Broccoli/Fasole verde — 500g</span><span class="price">~8 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Rosii — 500g</span><span class="price">~6 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Ceapa — 1 kg</span><span class="price">~4 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Usturoi — 2 buc</span><span class="price">~4 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Ardei/Castraveti</span><span class="price">~8 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Lapte 1.5% — 3L</span><span class="price">~18 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Sos de rosii (passata) — 500ml</span><span class="price">~6 lei</span></label>
+                    <label class="shop-item"><input type="checkbox"><span>Miere — 250g (lunar)</span><span class="price">~15 lei</span></label>
+                </div>
+            </div>
+
+            <div class="card budget-card">
+                <h3>Estimare Buget Lunar</h3>
+                <table class="budget-table">
+                    <tr><td>Proteine (pui, oua, ton, carne, branza)</td><td class="price">~480 lei</td></tr>
+                    <tr><td>Carbohidrati (ovaz, orez, paste, paine, cartofi)</td><td class="price">~150 lei</td></tr>
+                    <tr><td>Grasimi (ulei, unt arahide, unt, branza)</td><td class="price">~80 lei</td></tr>
+                    <tr><td>Legume & Fructe</td><td class="price">~120 lei</td></tr>
+                    <tr><td>Diverse (condimente, sos, miere, lapte)</td><td class="price">~100 lei</td></tr>
+                    <tr class="total-row"><td><strong>TOTAL MANCARE</strong></td><td class="price"><strong>~930 lei</strong></td></tr>
+                    <tr><td>Suplimente (whey, creatina, pre-workout)</td><td class="price">~240 lei</td></tr>
+                    <tr class="total-row"><td><strong>TOTAL GENERAL</strong></td><td class="price"><strong>~1170 lei</strong></td></tr>
+                </table>
+                <p class="budget-note">Ramai sub bugetul de 1500 lei cu ~330 lei de rezerva!</p>
+            </div>
+        </section>
+
+        <!-- ==================== PROGRESS ==================== -->
+        <section id="progress" class="section">
+            <h2 class="section-title">Urmarire Progres</h2>
+            <p class="section-subtitle">Cantareste-te saptamanal, dimineata, inainte de a manca</p>
+
+            <div class="card">
+                <h3>Adauga Inregistrare</h3>
+                <div class="progress-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="progress-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Greutate (kg)</label>
+                            <input type="number" id="progress-weight" step="0.1" placeholder="61.0">
+                        </div>
+                    </div>
+                    <div class="form-row measurements">
+                        <div class="form-group">
+                            <label>Talie (cm)</label>
+                            <input type="number" id="progress-waist" step="0.5" placeholder="optional">
+                        </div>
+                        <div class="form-group">
+                            <label>Brate (cm)</label>
+                            <input type="number" id="progress-arms" step="0.5" placeholder="optional">
+                        </div>
+                        <div class="form-group">
+                            <label>Piept (cm)</label>
+                            <input type="number" id="progress-chest" step="0.5" placeholder="optional">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Note</label>
+                        <input type="text" id="progress-notes" placeholder="Ex: M-am simtit bine, am crescut greutatea la squat...">
+                    </div>
+                    <button class="btn btn-primary" id="save-progress">Salveaza</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Grafic Greutate</h3>
+                <div class="chart-container" id="weight-chart">
+                    <canvas id="chart-canvas"></canvas>
+                    <p class="empty-state" id="chart-empty">Nicio inregistrare inca. Adauga prima ta cantarire!</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Istoric</h3>
+                <div id="progress-history">
+                    <p class="empty-state">Nicio inregistrare inca.</p>
+                </div>
+            </div>
+
+            <div class="card tip-card">
+                <h3>Cum sa te Cantaresti Corect</h3>
+                <ul>
+                    <li>Cantareste-te dimineata dupa ce mergi la baie, inainte sa mananci</li>
+                    <li>O data pe saptamana e suficient (ex: in fiecare Luni)</li>
+                    <li>Greutatea fluctueaza zilnic cu 0.5-1kg — e normal!</li>
+                    <li>Urmareste trendul pe 4+ saptamani, nu cantarirea individuala</li>
+                    <li>Masuratorile (talie, brate) sunt mai importante decat greutatea la recompozitie</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== SUPPLEMENTS ==================== -->
+        <section id="supplements" class="section">
+            <h2 class="section-title">Ghid Suplimente</h2>
+            <p class="section-subtitle">Suplimentele tale Optimum Nutrition</p>
+
+            <div class="supplement-card">
+                <div class="supplement-header">
+                    <h3>ON Gold Standard 100% Whey</h3>
+                    <span class="supplement-badge essential">ESENTIAL</span>
+                </div>
+                <div class="supplement-details">
+                    <div class="supp-row"><strong>Doza:</strong> 1 scoop (30g) = 24g proteine, ~120 kcal</div>
+                    <div class="supp-row"><strong>Cand:</strong> Pre-workout (18:30) cu apa sau lapte</div>
+                    <div class="supp-row"><strong>De ce:</strong> Te ajuta sa ajungi la 130g proteine/zi fara sa mananci cantitati enorme</div>
+                    <div class="supp-row"><strong>Zile de pauza:</strong> DA — ia-l si in zilele fara antrenament (dimineata sau intre mese)</div>
+                    <div class="supp-row"><strong>Tip:</strong> Amesteca cu 300ml apa rece. Gustul de Double Rich Chocolate si Vanilla Ice Cream sunt cele mai populare</div>
+                </div>
+            </div>
+
+            <div class="supplement-card">
+                <div class="supplement-header">
+                    <h3>ON Micronized Creatine</h3>
+                    <span class="supplement-badge essential">ESENTIAL</span>
+                </div>
+                <div class="supplement-details">
+                    <div class="supp-row"><strong>Doza:</strong> 5g pe zi (1 lingurita rasa), ZILNIC</div>
+                    <div class="supp-row"><strong>Cand:</strong> Oricand — cu shake-ul, in apa, sau cu masa. Nu conteaza ora</div>
+                    <div class="supp-row"><strong>De ce:</strong> Cel mai studiat si eficient supliment. Creste forta, volumul muscular si recuperarea</div>
+                    <div class="supp-row"><strong>Faza de incarcare:</strong> NU e necesara — 5g/zi zilnic e suficient. Efectul complet apare dupa ~3-4 saptamani</div>
+                    <div class="supp-row"><strong>Tip:</strong> Bea mai multa apa cand iei creatina (~0.5L extra/zi). E posibil sa pui 1-2kg de apa in primele saptamani — e normal!</div>
+                </div>
+            </div>
+
+            <div class="supplement-card">
+                <div class="supplement-header">
+                    <h3>ON Pre-Workout</h3>
+                    <span class="supplement-badge optional">OPTIONAL</span>
+                </div>
+                <div class="supplement-details">
+                    <div class="supp-row"><strong>Doza:</strong> 1 scoop conform instructiunilor de pe ambalaj</div>
+                    <div class="supp-row"><strong>Cand:</strong> 20-30 min inainte de antrenament (deci ~18:30)</div>
+                    <div class="supp-row"><strong>De ce:</strong> Energie si focus pentru antrenament dupa o zi intreaga</div>
+                    <div class="supp-row"><strong>Atentie:</strong> Contine cofeina! Daca te culci la 00:00-01:00 si te antrenezi la 19:00, ar trebui sa fie OK. Daca ai probleme cu somnul, renunta la el</div>
+                    <div class="supp-row"><strong>Tip:</strong> Nu-l lua in zilele libere. Daca te simti energic, poti sari peste el si sa bei doar apa. Nu crea dependenta de el</div>
+                </div>
+            </div>
+
+            <div class="card tip-card">
+                <h3>Ordine de Prioritate</h3>
+                <ol class="priority-list">
+                    <li><strong>Mancare de calitate</strong> — Niciun supliment nu inlocuieste o dieta buna</li>
+                    <li><strong>Somn 7+ ore</strong> — Muschii cresc in somn. 6 ore e putin, incearca sa dormi mai mult</li>
+                    <li><strong>Creatina</strong> — Cel mai important supliment, efecte dovedite stiintific</li>
+                    <li><strong>Proteina whey</strong> — Convenabil, dar poti ajunge la target si fara daca mananci suficiente proteine</li>
+                    <li><strong>Pre-workout</strong> — Nice to have, dar o cafea face acelasi lucru</li>
+                </ol>
+            </div>
+
+            <div class="card tip-card">
+                <h3>Nota despre Somn</h3>
+                <p>Cu trezirea la 6:20 si culcarea la 00:00-01:00, dormi doar <strong>5-6 ore</strong>. Asta e <strong>sub minimul recomandat</strong> de 7 ore. Somnul insuficient reduce:</p>
+                <ul>
+                    <li>Sinteza proteica musculara (muschii cresc mai greu)</li>
+                    <li>Nivelul de testosteron</li>
+                    <li>Recuperarea si performanta</li>
+                    <li>Motivatia si pofta de antrenament</li>
+                </ul>
+                <p><strong>Recomandare:</strong> Incearca sa te culci pe la 23:00 — chiar si 30 min in plus de somn ajuta enorm pe termen lung.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
