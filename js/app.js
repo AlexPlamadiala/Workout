@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initProgress();
     highlightToday();
     loadExerciseState();
+    initTrainerMode();
 });
 
 /* ========== NAVIGATION ========== */
@@ -480,6 +481,586 @@ function renderChart() {
     ctx.font = '18px -apple-system, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('kg', padding.left - 10, padding.top - 10);
+}
+
+/* ========== TRAINER MODE ========== */
+function initTrainerMode() {
+    const overlay = document.getElementById('trainer-overlay');
+    const closeBtn = document.getElementById('trainer-close');
+    const actionBtn = document.getElementById('trainer-action');
+    const actionSecBtn = document.getElementById('trainer-action-secondary');
+    const skipRestBtn = document.getElementById('trainer-skip-rest');
+
+    let state = null; // trainer state
+
+    // Warm-up steps based on workout type
+    const warmupSteps = {
+        upper: [
+            { icon: '🏃', name: 'Cardio Usor', detail: 'Alergare pe loc, jumping jacks sau sari coarda. Scopul e sa-ti cresti pulsul usor.', duration: '3 minute' },
+            { icon: '🔄', name: 'Rotatii Brate', detail: 'Cercuri mici si mari cu bratele. 10 inainte, 10 inapoi. Incalzeste articulatiile umarului.', duration: '30 secunde' },
+            { icon: '💪', name: 'Flotari Usoare', detail: 'Fa 10 flotari usoare (de pe genunchi daca e nevoie) ca sa activezi pieptul si tricepsul.', duration: '30 secunde' },
+            { icon: '🙆', name: 'Stretching Dinamic Umeri', detail: 'Cross-body arm stretches si arm circles. 10 repetari pe fiecare parte.', duration: '1 minut' }
+        ],
+        lower: [
+            { icon: '🏃', name: 'Cardio Usor', detail: 'Alergare pe loc, genuflexiuni cu greutatea corpului sau high knees. Creste-ti pulsul.', duration: '3 minute' },
+            { icon: '🦵', name: 'Genuflexiuni Bodyweight', detail: 'Fa 15 genuflexiuni lente fara greutate. Coboara adanc, simte stretching-ul.', duration: '1 minut' },
+            { icon: '🔄', name: 'Rotatii Solduri', detail: 'Cercuri cu soldurile - 10 in fiecare directie. Deschide articulatia soldului.', duration: '30 secunde' },
+            { icon: '🧘', name: 'Fandari Dinamice', detail: 'Fandari alternante fara greutate - 8 pe fiecare picior. Activeaza fesieri si cvadriceps.', duration: '1 minut' }
+        ]
+    };
+
+    const cooldownSteps = [
+        { icon: '🧘', name: 'Stretching Tot Corpul', detail: 'Stretching static pentru fiecare grupa musculara lucrata. Tine fiecare pozitie 20-30 secunde.', duration: '3 minute' },
+        { icon: '🫁', name: 'Respiratie Profunda', detail: 'Inspira pe nas 4 secunde, tine 4 secunde, expira pe gura 6 secunde. Repeta de 5 ori.', duration: '1 minut' },
+        { icon: '💧', name: 'Hidrateaza-te!', detail: 'Bea un pahar mare de apa. Corpul tau are nevoie de hidratare dupa efort.', duration: '' }
+    ];
+
+    const trainerMessages = {
+        warmupStart: [
+            'Hai sa ne incalzim bine! Un corp incalzit = performanta mai buna si risc redus de accidentari.',
+            'E timpul de incalzire! Nu sari peste pasul asta, e esential pentru un antrenament bun.',
+            'Sa incepem cu incalzirea! Cateva minute acum iti salveaza saptamani de recuperare.'
+        ],
+        warmupStep: [
+            'Foarte bine! Continua asa, pregateste-ti corpul.',
+            'Excelent! Simti cum se incalzeste musculatura?',
+            'Bun! Mai avem putin si trecem la treaba!'
+        ],
+        exerciseStart: [
+            'Gata incalzirea! Acum incepe treaba serioasa. Concentreaza-te pe forma corecta!',
+            'Ai terminat incalzirea, esti pregatit! Sa dam tot ce avem!',
+            'Perfect, esti incalzit! Acum trage tare, dar cu forma corecta!'
+        ],
+        setDone: [
+            'Bravo! Set terminat! Ia o pauza si recupereaza.',
+            'Excelent! Felicitari! Acum odihneste-te putin.',
+            'Foarte bine! Foloseste pauza sa-ti controlezi respiratia.',
+            'Set gata! Bea o gura de apa si respira adanc.',
+            'Perfect executat! Pauza meritata!'
+        ],
+        nextExercise: [
+            'Urmatorul exercitiu! Concentreaza-te pe forma.',
+            'Trecem mai departe! Tine-o tot asa!',
+            'Exercitiu nou! Citeste indicatiile si da-i drumul.',
+            'Hai la urmatorul! Esti pe drumul bun!'
+        ],
+        lastSet: [
+            'Ultimul set! Da tot ce ai, nu te opri!',
+            'Setul FINAL! Lasa totul aici!',
+            'Mai ai UN SET! Fa-l sa conteze!'
+        ],
+        cooldownStart: [
+            'Antrenamentul s-a terminat! Bravo! Acum sa ne racim si sa ne intindem.',
+            'Felicitari, ai terminat! Cooldown-ul e important pentru recuperare.',
+            'Excelent antrenament! Sa ne racim putin acum.'
+        ],
+        finished: [
+            'BRAVO! Ai terminat antrenamentul de azi! Fii mandru de tine!',
+            'FELICITARI! Alt antrenament bifat! Consistenta e cheia!',
+            'EXCELENT! Ai dat totul azi! Acum odihneste-te si mananca bine!'
+        ]
+    };
+
+    function randomMsg(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function parseExercises(dayId) {
+        const dayContent = document.getElementById(dayId);
+        if (!dayContent) return [];
+        const cards = dayContent.querySelectorAll('.exercise-card');
+        const exercises = [];
+        cards.forEach(card => {
+            const name = card.querySelector('.exercise-header h4')?.textContent || '';
+            const setsText = card.querySelector('.sets-badge')?.textContent || '';
+            const target = card.querySelector('.exercise-target')?.textContent || '';
+            const desc = card.querySelector('.exercise-desc')?.textContent || '';
+            const dataExercise = card.querySelector('.exercise-sets')?.dataset.exercise || '';
+
+            // Parse sets count from text like "4 × 8-12" or "3 × MAX"
+            const setsMatch = setsText.match(/(\d+)\s*[×x]/i);
+            const numSets = setsMatch ? parseInt(setsMatch[1]) : 3;
+
+            exercises.push({ name, setsText, target, desc, numSets, dataExercise });
+        });
+        return exercises;
+    }
+
+    function getDayType(dayId) {
+        const header = document.querySelector(`[data-target="${dayId}"]`);
+        if (!header) return 'upper';
+        const badge = header.querySelector('.day-badge');
+        if (badge && badge.classList.contains('lower')) return 'lower';
+        return 'upper';
+    }
+
+    function getDayTitle(dayId) {
+        const header = document.querySelector(`[data-target="${dayId}"]`);
+        if (!header) return '';
+        const titleSpan = header.querySelector('.day-title span:not(.day-badge)');
+        return titleSpan ? titleSpan.textContent : '';
+    }
+
+    function startTrainer(dayId) {
+        const exercises = parseExercises(dayId);
+        if (exercises.length === 0) return;
+
+        const dayType = getDayType(dayId);
+        const warmup = warmupSteps[dayType] || warmupSteps.upper;
+
+        state = {
+            dayId,
+            dayTitle: getDayTitle(dayId),
+            dayType,
+            exercises,
+            warmup,
+            phase: 'warmup', // warmup, exercise, rest, cooldown, done
+            warmupIndex: 0,
+            exerciseIndex: 0,
+            setIndex: 0,
+            cooldownIndex: 0,
+            totalSets: exercises.reduce((sum, ex) => sum + ex.numSets, 0),
+            completedSets: 0,
+            startTime: Date.now(),
+            restTimer: null,
+            restTime: 90,
+            restTimeLeft: 0
+        };
+
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        showWarmupStart();
+    }
+
+    function stopTrainer() {
+        if (state && state.restTimer) {
+            clearInterval(state.restTimer);
+        }
+        state = null;
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function updateProgress() {
+        if (!state) return;
+        const fill = document.getElementById('trainer-progress-fill');
+        const totalSteps = state.warmup.length + state.totalSets + cooldownSteps.length;
+        let completed = 0;
+
+        if (state.phase === 'warmup') {
+            completed = state.warmupIndex;
+        } else if (state.phase === 'exercise' || state.phase === 'rest') {
+            completed = state.warmup.length + state.completedSets;
+        } else if (state.phase === 'cooldown') {
+            completed = state.warmup.length + state.totalSets + state.cooldownIndex;
+        } else if (state.phase === 'done') {
+            completed = totalSteps;
+        }
+
+        const pct = Math.min(100, (completed / totalSteps) * 100);
+        fill.style.width = pct + '%';
+    }
+
+    function setPhaseLabel(text, cls) {
+        const label = document.getElementById('trainer-phase-label');
+        label.textContent = text;
+        label.className = '';
+        if (cls) label.classList.add(cls);
+    }
+
+    function setStepLabel(text) {
+        document.getElementById('trainer-step-label').textContent = text;
+    }
+
+    function setTrainerText(text) {
+        document.getElementById('trainer-text').textContent = text;
+    }
+
+    function showElement(id) {
+        document.getElementById(id).style.display = '';
+    }
+
+    function hideElement(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function hideAllCards() {
+        hideElement('trainer-exercise');
+        document.getElementById('trainer-exercise').classList.remove('visible');
+        hideElement('trainer-step-card');
+        hideElement('trainer-set-tracker');
+        hideElement('trainer-timer');
+        hideElement('trainer-summary');
+    }
+
+    // ---- WARM-UP ----
+    function showWarmupStart() {
+        hideAllCards();
+        setPhaseLabel('INCALZIRE', 'warmup');
+        setStepLabel(`Pas ${state.warmupIndex + 1} din ${state.warmup.length}`);
+        setTrainerText(randomMsg(trainerMessages.warmupStart));
+        showWarmupStep();
+        actionBtn.textContent = 'GATA, URMATORUL PAS';
+        actionBtn.onclick = nextWarmupStep;
+        hideElement('trainer-action-secondary');
+        updateProgress();
+    }
+
+    function showWarmupStep() {
+        const step = state.warmup[state.warmupIndex];
+        if (!step) return;
+
+        showElement('trainer-step-card');
+        document.getElementById('trainer-step-icon').textContent = step.icon;
+        document.getElementById('trainer-step-name').textContent = step.name;
+        document.getElementById('trainer-step-detail').textContent = step.detail;
+        document.getElementById('trainer-step-duration').textContent = step.duration;
+    }
+
+    function nextWarmupStep() {
+        state.warmupIndex++;
+        if (state.warmupIndex >= state.warmup.length) {
+            // Warm-up done, move to exercises
+            startExercisePhase();
+            return;
+        }
+        setStepLabel(`Pas ${state.warmupIndex + 1} din ${state.warmup.length}`);
+        setTrainerText(randomMsg(trainerMessages.warmupStep));
+        hideAllCards();
+        showWarmupStep();
+        updateProgress();
+    }
+
+    // ---- EXERCISES ----
+    function startExercisePhase() {
+        state.phase = 'exercise';
+        state.exerciseIndex = 0;
+        state.setIndex = 0;
+        setTrainerText(randomMsg(trainerMessages.exerciseStart));
+        showCurrentExercise();
+    }
+
+    function showCurrentExercise() {
+        hideAllCards();
+        const ex = state.exercises[state.exerciseIndex];
+        if (!ex) return;
+
+        setPhaseLabel('EXERCITIU', 'exercise');
+        setStepLabel(`Exercitiu ${state.exerciseIndex + 1} din ${state.exercises.length}`);
+
+        // Show exercise card
+        const exCard = document.getElementById('trainer-exercise');
+        exCard.style.display = '';
+        exCard.classList.add('visible');
+        document.getElementById('trainer-exercise-name').textContent = ex.name;
+        document.getElementById('trainer-sets-badge').textContent = ex.setsText;
+        document.getElementById('trainer-target').textContent = ex.target;
+        document.getElementById('trainer-desc').textContent = ex.desc;
+
+        // Show set tracker
+        showElement('trainer-set-tracker');
+        renderSetDots(ex.numSets, state.setIndex);
+
+        actionBtn.textContent = state.setIndex === ex.numSets - 1 ? 'ULTIMUL SET - GATA!' : 'SET TERMINAT!';
+        actionBtn.onclick = completeSet;
+        hideElement('trainer-action-secondary');
+
+        updateProgress();
+    }
+
+    function renderSetDots(total, currentIndex) {
+        const container = document.getElementById('trainer-set-dots');
+        container.innerHTML = '';
+        for (let i = 0; i < total; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'trainer-set-dot';
+            if (i < currentIndex) {
+                dot.classList.add('done');
+                dot.textContent = '✓';
+            } else if (i === currentIndex) {
+                dot.classList.add('current');
+                dot.textContent = (i + 1);
+            } else {
+                dot.textContent = (i + 1);
+            }
+            container.appendChild(dot);
+        }
+        document.getElementById('trainer-set-label').textContent = `Set ${currentIndex + 1} din ${total}`;
+    }
+
+    function completeSet() {
+        const ex = state.exercises[state.exerciseIndex];
+        state.completedSets++;
+
+        // Mark checkbox in original workout page
+        markSetCheckbox(ex.dataExercise, state.setIndex);
+
+        state.setIndex++;
+
+        if (state.setIndex >= ex.numSets) {
+            // Exercise done, move to next exercise or cooldown
+            state.exerciseIndex++;
+            state.setIndex = 0;
+
+            if (state.exerciseIndex >= state.exercises.length) {
+                // All exercises done!
+                startCooldownPhase();
+            } else {
+                // Show rest then next exercise
+                setTrainerText(randomMsg(trainerMessages.nextExercise));
+                startRestTimer(() => showCurrentExercise());
+            }
+        } else {
+            // More sets, start rest
+            if (state.setIndex === ex.numSets - 1) {
+                setTrainerText(randomMsg(trainerMessages.lastSet));
+            } else {
+                setTrainerText(randomMsg(trainerMessages.setDone));
+            }
+            startRestTimer(() => showCurrentExercise());
+        }
+    }
+
+    function markSetCheckbox(dataExercise, setIdx) {
+        if (!dataExercise) return;
+        const container = document.querySelector(`[data-exercise="${dataExercise}"]`);
+        if (!container) return;
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        if (checkboxes[setIdx]) {
+            checkboxes[setIdx].checked = true;
+            saveExerciseState();
+        }
+    }
+
+    // ---- REST TIMER ----
+    function startRestTimer(callback) {
+        state.phase = 'rest';
+        hideAllCards();
+
+        // Keep exercise card visible but show timer
+        const exCard = document.getElementById('trainer-exercise');
+        exCard.style.display = '';
+        exCard.classList.add('visible');
+
+        // Update set dots
+        const ex = state.exercises[state.exerciseIndex] || state.exercises[state.exerciseIndex - 1];
+        if (ex) {
+            showElement('trainer-set-tracker');
+            const currentSet = state.exerciseIndex < state.exercises.length ? state.setIndex : ex.numSets;
+            renderSetDots(ex.numSets, currentSet);
+        }
+
+        setPhaseLabel('PAUZA', 'rest');
+
+        showElement('trainer-timer');
+        state.restTimeLeft = state.restTime;
+        updateRestDisplay();
+
+        actionBtn.textContent = 'ASTEPT...';
+        actionBtn.onclick = null;
+        actionBtn.style.opacity = '0.5';
+
+        // Start countdown
+        state.restTimer = setInterval(() => {
+            state.restTimeLeft--;
+            updateRestDisplay();
+
+            if (state.restTimeLeft <= 5 && state.restTimeLeft > 0) {
+                document.getElementById('trainer-timer-display').classList.add('finishing');
+            }
+
+            if (state.restTimeLeft <= 0) {
+                clearInterval(state.restTimer);
+                state.restTimer = null;
+                document.getElementById('trainer-timer-display').classList.remove('finishing');
+                document.getElementById('trainer-timer-display').classList.add('done');
+                timerDoneNotify();
+                state.phase = 'exercise';
+                actionBtn.style.opacity = '1';
+                actionBtn.textContent = 'HAI, URMATORUL!';
+                actionBtn.onclick = () => {
+                    document.getElementById('trainer-timer-display').classList.remove('done');
+                    callback();
+                };
+            }
+        }, 1000);
+
+        // Skip rest button
+        skipRestBtn.onclick = () => {
+            clearInterval(state.restTimer);
+            state.restTimer = null;
+            state.phase = 'exercise';
+            actionBtn.style.opacity = '1';
+            document.getElementById('trainer-timer-display').classList.remove('finishing', 'done');
+            callback();
+        };
+
+        updateProgress();
+    }
+
+    function updateRestDisplay() {
+        const min = Math.floor(state.restTimeLeft / 60);
+        const sec = state.restTimeLeft % 60;
+        document.getElementById('trainer-timer-display').textContent =
+            `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
+
+    function timerDoneNotify() {
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200, 100, 200]);
+        }
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            for (let i = 0; i < 3; i++) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.frequency.value = 800;
+                gain.gain.value = 0.3;
+                osc.start(audioCtx.currentTime + i * 0.3);
+                osc.stop(audioCtx.currentTime + i * 0.3 + 0.15);
+            }
+        } catch (e) { /* ok */ }
+    }
+
+    // ---- COOLDOWN ----
+    function startCooldownPhase() {
+        state.phase = 'cooldown';
+        state.cooldownIndex = 0;
+        setTrainerText(randomMsg(trainerMessages.cooldownStart));
+        showCooldownStep();
+    }
+
+    function showCooldownStep() {
+        hideAllCards();
+        const step = cooldownSteps[state.cooldownIndex];
+        if (!step) return;
+
+        setPhaseLabel('RACIRE', 'cooldown');
+        setStepLabel(`Pas ${state.cooldownIndex + 1} din ${cooldownSteps.length}`);
+
+        showElement('trainer-step-card');
+        document.getElementById('trainer-step-icon').textContent = step.icon;
+        document.getElementById('trainer-step-name').textContent = step.name;
+        document.getElementById('trainer-step-detail').textContent = step.detail;
+        document.getElementById('trainer-step-duration').textContent = step.duration;
+
+        actionBtn.style.opacity = '1';
+        actionBtn.textContent = 'GATA, URMATORUL PAS';
+        actionBtn.onclick = nextCooldownStep;
+        hideElement('trainer-action-secondary');
+
+        updateProgress();
+    }
+
+    function nextCooldownStep() {
+        state.cooldownIndex++;
+        if (state.cooldownIndex >= cooldownSteps.length) {
+            showSummary();
+            return;
+        }
+        showCooldownStep();
+    }
+
+    // ---- SUMMARY ----
+    function showSummary() {
+        state.phase = 'done';
+        hideAllCards();
+        setPhaseLabel('GATA!', 'done');
+        setStepLabel('');
+        setTrainerText(randomMsg(trainerMessages.finished));
+
+        showElement('trainer-summary');
+
+        const duration = Math.round((Date.now() - state.startTime) / 60000);
+        const statsHtml = `
+            <div class="trainer-stat-card">
+                <span class="trainer-stat-value">${state.exercises.length}</span>
+                <span class="trainer-stat-label">Exercitii</span>
+            </div>
+            <div class="trainer-stat-card">
+                <span class="trainer-stat-value">${state.completedSets}</span>
+                <span class="trainer-stat-label">Seturi</span>
+            </div>
+            <div class="trainer-stat-card">
+                <span class="trainer-stat-value">${duration}</span>
+                <span class="trainer-stat-label">Minute</span>
+            </div>
+            <div class="trainer-stat-card">
+                <span class="trainer-stat-value">${state.dayType === 'upper' ? 'UPPER' : 'LOWER'}</span>
+                <span class="trainer-stat-label">Tip Zi</span>
+            </div>
+        `;
+        document.getElementById('trainer-summary-stats').innerHTML = statsHtml;
+
+        actionBtn.style.opacity = '1';
+        actionBtn.textContent = 'INCHIDE';
+        actionBtn.onclick = stopTrainer;
+        hideElement('trainer-action-secondary');
+
+        updateProgress();
+    }
+
+    // ---- PRESET HANDLERS ----
+    document.querySelectorAll('.trainer-preset').forEach(preset => {
+        preset.addEventListener('click', () => {
+            document.querySelectorAll('.trainer-preset').forEach(p => p.classList.remove('active'));
+            preset.classList.add('active');
+            if (state) {
+                state.restTime = parseInt(preset.dataset.time);
+                // If timer is running, update it
+                if (state.phase === 'rest' && state.restTimer) {
+                    clearInterval(state.restTimer);
+                    state.restTimeLeft = state.restTime;
+                    updateRestDisplay();
+                    document.getElementById('trainer-timer-display').classList.remove('finishing', 'done');
+
+                    actionBtn.textContent = 'ASTEPT...';
+                    actionBtn.onclick = null;
+                    actionBtn.style.opacity = '0.5';
+
+                    const callback = actionBtn._restCallback;
+                    state.restTimer = setInterval(() => {
+                        state.restTimeLeft--;
+                        updateRestDisplay();
+                        if (state.restTimeLeft <= 5 && state.restTimeLeft > 0) {
+                            document.getElementById('trainer-timer-display').classList.add('finishing');
+                        }
+                        if (state.restTimeLeft <= 0) {
+                            clearInterval(state.restTimer);
+                            state.restTimer = null;
+                            document.getElementById('trainer-timer-display').classList.remove('finishing');
+                            document.getElementById('trainer-timer-display').classList.add('done');
+                            timerDoneNotify();
+                            state.phase = 'exercise';
+                            actionBtn.style.opacity = '1';
+                            actionBtn.textContent = 'HAI, URMATORUL!';
+                        }
+                    }, 1000);
+                }
+            }
+        });
+    });
+
+    // ---- EVENT LISTENERS ----
+    closeBtn.addEventListener('click', () => {
+        if (state && state.phase !== 'done') {
+            if (confirm('Esti sigur ca vrei sa opresti antrenamentul?')) {
+                stopTrainer();
+            }
+        } else {
+            stopTrainer();
+        }
+    });
+
+    // Start workout buttons
+    document.querySelectorAll('.btn-start-workout').forEach(btn => {
+        btn.addEventListener('click', () => {
+            startTrainer(btn.dataset.day);
+        });
+    });
 }
 
 /* ========== UTILITY FUNCTIONS ========== */

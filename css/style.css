@@ -1200,3 +1200,460 @@ body {
         font-size: 1.8rem;
     }
 }
+
+/* ========== START WORKOUT BUTTON ========== */
+.btn-start-workout {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 2px solid var(--green);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+    color: var(--green);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-start-workout:hover {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.15));
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+/* ========== TRAINER MODE OVERLAY ========== */
+.trainer-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg-primary);
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.trainer-overlay.active {
+    display: flex;
+}
+
+/* Trainer Header */
+.trainer-header {
+    padding: 16px 20px 12px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.trainer-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.trainer-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--red);
+}
+
+.trainer-progress-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#trainer-phase-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--accent-light);
+}
+
+#trainer-phase-label.warmup { background: rgba(245, 158, 11, 0.2); color: var(--orange); }
+#trainer-phase-label.exercise { background: rgba(139, 92, 246, 0.2); color: var(--purple); }
+#trainer-phase-label.rest { background: rgba(100, 116, 139, 0.2); color: var(--text-muted); }
+#trainer-phase-label.cooldown { background: rgba(59, 130, 246, 0.2); color: var(--accent-light); }
+#trainer-phase-label.done { background: rgba(16, 185, 129, 0.2); color: var(--green); }
+
+#trainer-step-label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.trainer-progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.trainer-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+/* Trainer Body */
+.trainer-body {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Trainer Message (Coach bubble) */
+.trainer-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08));
+    border-radius: var(--radius);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.trainer-avatar {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.trainer-message p {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding-top: 4px;
+}
+
+/* Trainer Exercise Card */
+.trainer-exercise {
+    width: 100%;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    border: 1px solid var(--border);
+    display: none;
+}
+
+.trainer-exercise.visible {
+    display: block;
+}
+
+.trainer-exercise h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.trainer-sets-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.trainer-badge {
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--purple);
+}
+
+.trainer-target {
+    font-size: 0.85rem;
+    color: var(--accent-light);
+}
+
+.trainer-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Warm-up / Cooldown Step Card */
+.trainer-step-card {
+    width: 100%;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 30px 20px;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+.trainer-step-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.trainer-step-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.trainer-step-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.trainer-step-duration {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--orange);
+    margin-top: 8px;
+}
+
+/* Set Tracker */
+.trainer-set-tracker {
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.trainer-set-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.trainer-set-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.3s;
+}
+
+.trainer-set-dot.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+}
+
+.trainer-set-dot.current {
+    border-color: var(--accent);
+    color: var(--accent-light);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.trainer-set-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* Rest Timer in Trainer */
+.trainer-timer {
+    width: 100%;
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03));
+    border-radius: var(--radius);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.trainer-timer-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.trainer-timer-display {
+    font-size: 4.5rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    color: var(--green);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 16px;
+}
+
+.trainer-timer-display.finishing {
+    color: var(--orange);
+}
+
+.trainer-timer-display.done {
+    color: var(--red);
+    animation: pulse 0.5s ease infinite alternate;
+}
+
+.trainer-timer-presets {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.trainer-preset {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.trainer-preset.active {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+}
+
+.trainer-skip-rest {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 6px 12px;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.trainer-skip-rest:hover {
+    color: var(--text-secondary);
+}
+
+/* Summary */
+.trainer-summary {
+    width: 100%;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.trainer-summary-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.trainer-summary h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--green), var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.trainer-summary-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.trainer-stat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    border: 1px solid var(--border);
+}
+
+.trainer-stat-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent-light);
+    display: block;
+}
+
+.trainer-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Trainer Footer */
+.trainer-footer {
+    padding: 16px 20px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+.trainer-btn {
+    flex: 1;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: none;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.trainer-btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.trainer-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.trainer-btn-primary:active {
+    transform: translateY(0);
+}
+
+.trainer-btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: var(--text-secondary);
+    flex: 0.4;
+}
+
+.trainer-btn-secondary:hover {
+    background: rgba(255,255,255,0.12);
+}

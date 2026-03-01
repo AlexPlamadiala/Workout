@@ -228,6 +228,7 @@
                     <span class="arrow">▼</span>
                 </button>
                 <div class="day-content" id="day1">
+                    <button class="btn-start-workout" data-day="day1">INCEPE ANTRENAMENTUL</button>
                     <div class="exercise-card">
                         <div class="exercise-header">
                             <h4>1. Floor Press cu Bara</h4>
@@ -334,6 +335,7 @@
                     <span class="arrow">▼</span>
                 </button>
                 <div class="day-content" id="day2">
+                    <button class="btn-start-workout" data-day="day2">INCEPE ANTRENAMENTUL</button>
                     <div class="exercise-card">
                         <div class="exercise-header">
                             <h4>1. Genuflexiuni (Squat) cu Bara</h4>
@@ -450,6 +452,7 @@
                     <span class="arrow">▼</span>
                 </button>
                 <div class="day-content" id="day4">
+                    <button class="btn-start-workout" data-day="day4">INCEPE ANTRENAMENTUL</button>
                     <div class="exercise-card">
                         <div class="exercise-header">
                             <h4>1. Presa Overhead cu Bara</h4>
@@ -557,6 +560,7 @@
                     <span class="arrow">▼</span>
                 </button>
                 <div class="day-content" id="day5">
+                    <button class="btn-start-workout" data-day="day5">INCEPE ANTRENAMENTUL</button>
                     <div class="exercise-card">
                         <div class="exercise-header">
                             <h4>1. Indreptari (Deadlift) cu Bara</h4>
@@ -1078,6 +1082,77 @@
             </div>
         </section>
     </main>
+
+    <!-- ==================== TRAINER MODE OVERLAY ==================== -->
+    <div id="trainer-overlay" class="trainer-overlay">
+        <div class="trainer-header">
+            <button class="trainer-close" id="trainer-close">✕</button>
+            <div class="trainer-progress-info">
+                <span id="trainer-phase-label">INCALZIRE</span>
+                <span id="trainer-step-label"></span>
+            </div>
+            <div class="trainer-progress-bar">
+                <div class="trainer-progress-fill" id="trainer-progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="trainer-body">
+            <!-- Trainer message -->
+            <div class="trainer-message" id="trainer-message">
+                <div class="trainer-avatar">💪</div>
+                <p id="trainer-text">Hai sa incepem!</p>
+            </div>
+
+            <!-- Current exercise info -->
+            <div class="trainer-exercise" id="trainer-exercise">
+                <h2 id="trainer-exercise-name"></h2>
+                <div class="trainer-sets-info">
+                    <span class="trainer-badge" id="trainer-sets-badge"></span>
+                    <span class="trainer-target" id="trainer-target"></span>
+                </div>
+                <p class="trainer-desc" id="trainer-desc"></p>
+            </div>
+
+            <!-- Warm-up / Cooldown steps -->
+            <div class="trainer-step-card" id="trainer-step-card" style="display:none;">
+                <div class="trainer-step-icon" id="trainer-step-icon"></div>
+                <h3 id="trainer-step-name"></h3>
+                <p id="trainer-step-detail"></p>
+                <div class="trainer-step-duration" id="trainer-step-duration"></div>
+            </div>
+
+            <!-- Set tracker -->
+            <div class="trainer-set-tracker" id="trainer-set-tracker" style="display:none;">
+                <div class="trainer-set-dots" id="trainer-set-dots"></div>
+                <span class="trainer-set-label" id="trainer-set-label">Set 1 din 4</span>
+            </div>
+
+            <!-- Rest timer -->
+            <div class="trainer-timer" id="trainer-timer" style="display:none;">
+                <div class="trainer-timer-label">PAUZA</div>
+                <div class="trainer-timer-display" id="trainer-timer-display">01:30</div>
+                <div class="trainer-timer-presets" id="trainer-timer-presets">
+                    <button class="trainer-preset" data-time="60">1:00</button>
+                    <button class="trainer-preset active" data-time="90">1:30</button>
+                    <button class="trainer-preset" data-time="120">2:00</button>
+                    <button class="trainer-preset" data-time="180">3:00</button>
+                </div>
+                <button class="trainer-skip-rest" id="trainer-skip-rest">Sari pauza</button>
+            </div>
+
+            <!-- Summary -->
+            <div class="trainer-summary" id="trainer-summary" style="display:none;">
+                <div class="trainer-summary-icon">🏆</div>
+                <h2>Antrenament Complet!</h2>
+                <div class="trainer-summary-stats" id="trainer-summary-stats"></div>
+            </div>
+        </div>
+
+        <div class="trainer-footer">
+            <button class="trainer-btn trainer-btn-primary" id="trainer-action">INCEPE INCALZIREA</button>
+            <button class="trainer-btn trainer-btn-secondary" id="trainer-action-secondary" style="display:none;">SARI PESTE</button>
+        </div>
+    </div>
 
     <script src="js/app.js"></script>
 </body>
